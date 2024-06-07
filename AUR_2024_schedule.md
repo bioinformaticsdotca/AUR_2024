@@ -20,7 +20,3 @@ home: https://bioinformaticsdotca.github.io/AUR_2024
 |      15:00     |                                    Break (30min)                                    |      15:00     | Short differential expression exercise (Shraddha Pai, Ian Cheong) |
 |      15:30     | Short dimensionality reduction and clustering project (Chaitra Sarathy, Ian Cheong) |      17:00     |                      Survey & Closing Remarks                     |
 |      17:30     |                                       Finished                                      |      17:30     |                              Finished                             |
-|      14:15     |                    Module 2: Exploring your data in R   (cont'd)                    |      15:15     |                           Break (15min)                           |
-|      15:15     |                                    Break (15min)                                    |      15:30     |                           Short Project                           |
-|      15:30     |                               Review and Short project                              |      17:00     |                      Survey & Closing Remarks                     |
-|      17:30     |                                       Finished                                      |      17:30     |                              Finished                             |
