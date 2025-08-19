@@ -1,0 +1,350 @@
+# (PART) Modules {-}
+
+# Module 1: Exploratory Data Analysis and Clustering
+
+## Lecture
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/0lzKVP1SNIQ?si=HBFXLHNA676rARbI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<br>
+
+![Module 1: Exploratory Data Analysis and Clustering Lecture Slides](content-files/module-1-lecture.pdf){width=100% height=900}\
+
+## Lab
+
+The goal of this lab is to examine correlation structure in a sample transcriptomic dataset using clustering.
+
+We will start using a small mouse expression dataset from two tissues:
+* We will briefly explore the dataset using `dim()`, `head()`, and `summary()`
+* We will visualize correlation using `pairs()` and `corrplot()`
+* We will cluster samples using k-means and hierarchical clustering methods using `dist()` and `hclust()`
+  * We will assign samples to clusters using `cutree()` and visualize these using `heatmap()`
+* We will use `clValid` to find out what cluster number best separates groups
+
+Finally we will explore clustering in a more complex bladder cancer dataset.
+
+### Load `mouse` Data
+
+For this exercise we are going to load a dataset built into the `clValid` package.
+This dataset measures 147 genes and expressed sequence tags in two developing mouse lineages: the neural crest cells and mesoderm-derived cells. There are three samples per group.
+
+Let's load the data.
+```{r, message=FALSE}
+suppressMessages(library(clValid))
+data(mouse)
+```
+
+Use `str()` to see what types of data the columns have:
+```{r, message=FALSE}
+str(mouse)
+```
+
+Another command is `head()`:
+```{r, message=FALSE}
+head(mouse)
+```
+
+Summary provides useful information about the distribution of variables. Note that `FC` has categorical variables:
+```{r, message=FALSE}
+summary(mouse)
+```
+
+What are the values in `FC`?
+```{r, message=FALSE}
+table(mouse$FC)
+```
+
+Usually the information about samples ("metadata") is in a different table. 
+
+Let's load the sample information about the mouse dataset:
+```{r, message=FALSE}
+pheno <- read.delim("datasets/mouse_pheno.txt",sep="\t",h=T,as.is=T)
+```
+
+Let's look at it:
+```{r, message=FALSE}
+head(pheno)
+```
+
+Let's use `pairs()`  to look at pairwise scatterplots of the expression data in a single plot. We need to subset the columns with the expression data first:
+```{r, message=FALSE}
+mouse_exp = mouse[,c("M1","M2","M3","NC1","NC2","NC3")]
+pairs(mouse_exp)
+```
+
+### Correlations, Distances, and Clustering
+
+Let's look at sample correlation matrix. This should be a square matrix, equal to the number of samples.
+We have six samples, so the correlation matrix should be `6x6`.
+```{r, message=FALSE}
+library(corrplot)
+mouse_cor <- cor(mouse_exp)
+dim(mouse_cor)
+round(mouse_cor,2)
+corrplot(mouse_cor, method="color")
+```
+
+* Which samples appear to be best correlated with each other?
+* Which samples don't appear to be as well correlated with each other?
+
+### Hierarchical Clustering
+
+Hierarchical clustering requires distances between samples. Let's use `dist()` to compute these distances, and `hclust()` to generate the hierarchical clustering object. 
+```{r, message=FALSE}
+d <- dist(t(log(mouse_exp)))
+```
+ 
+Using these distances, we cluster the samples using hierarchical clustering:
+```{r, message=FALSE}
+h <- hclust(d,method="ward.D2")
+```
+
+The output of this can be plotted:
+```{r, message=FALSE}
+plot(h)
+```
+
+Can you guess how many clusters could best fit the data?
+
+Now let's add a heatmap to this dendrogram, so we can see the values of genes in each cluster. For this we will use the `heatmap()` function. First let's just try the heatmap function:
+```{r, message=FALSE}
+mouse_exp <- as.matrix(mouse_exp)
+heatmap(mouse_exp)
+```
+
+We can clearly see the data separated into two. But now let's colour-code samples based on cluster assignments. We get cluster assignments by "cutting" the dendrogram for two clusters (something we expect from our experimental design). We use `cutree()` for this.  
+```{r, message=FALSE}
+h2 <- cutree(h, k = 2)
+```
+
+Let's look at our assigned labels:
+```{r, message=FALSE}
+h2
+```
+
+Let's assign colours to the clusters so that cluster 1 is in pink, and cluster 2 is in green:
+```{r, message=FALSE}
+clust_colours <- c("pink","green")[h2]
+```
+
+Look at clust_colours:
+```{r, message=FALSE}
+clust_colours
+```
+
+Now let's plot the heatmap using these assigned cluster labels:
+```{r, message=FALSE}
+heatmap(mouse_exp,
+    ColSideColors=clust_colours)
+```
+
+Note that the two colours are completely divided (i.e., there is no interspersed pink and green). 
+
+However, not all datasets are this simple. Let's cluster a bladder cancer gene expression dataset.
+This is in the R package, `bladderbatch` which we have already installed.
+```{r, message=FALSE}
+(library(bladderbatch))
+```
+
+Load the dataset:
+```{r, message=FALSE}
+data(bladderdata)
+```
+
+We will use specialized functions to get the expression data and sample information. 
+```{r, message=FALSE}
+bexprs <- exprs(bladderEset)
+bpheno <- pData(bladderEset)
+```
+
+How many genes and samples do we have in this dataset?
+
+Let us use the same code as above to cluster these samples:
+```{r bladder-hclust, message=FALSE}
+d <- dist(t(bexprs))
+h <- hclust(d, method="ward.D2")
+plot(h)
+```
+
+How many clusters do we see?
+
+Let's assume three clusters, and assign colours to these. As before we use `cutree()`:
+```{r bladder-cutree, message=FALSE}
+h3 <- cutree(h, k=3)
+clust_colours <- c("red","green","blue")[h3]
+```
+
+Look at the colour assignments?
+```{r, message=FALSE}
+table(h3)
+```
+
+Let's just plot the heatmap.
+```{r heatmap-bladder1, message=FALSE}
+heatmap(bexprs,
+    ColSideColors=clust_colours)
+```
+
+Why aren't the samples clustering?
+
+Now try providing the `hclustfun`  to `heatmap()` so it uses the same method to cluster as we did. For this we will create a custom function:
+```{r hclust-func, message=FALSE}
+myhclust <- function(x) {
+    hclust(x,method="ward.D2")
+}
+```
+
+And now we run heatmap again, using our clustering function:
+```{r heatmap-bladder2, message=FALSE}
+heatmap(bexprs,
+    ColSideColors=clust_colours,
+    hclustfun=myhclust
+)
+```
+
+### K-means Clustering
+
+Let's try using k-means clustering, asking for three clusters:
+```{r, message=FALSE}
+kclust <- kmeans(
+    mouse_exp, 
+    centers = 3
+)
+kclust
+```
+
+### Using `clValid` to Determine Number of Clusters
+
+Use the `clValid()` function to validate clusters using the:
+
+* Dunn index,
+* silhouette scores, and
+* connectivity
+
+```{r, message=FALSE}
+validation_data <- clValid(
+    mouse_exp,
+    2:6, # num. clusters to evaluate
+    clMethods = c("hier","kmeans"), # methods to eval.
+    validation = "internal"
+)
+```
+
+Let's look at the results:
+```{r, message=FALSE}
+summary(validation_data)
+```
+
+All measures of clustering consistently indicate that **two** clusters best fit the data.
+
+Now let's cluster:
+
+```{r, message=FALSE}
+d <- dist(t(log(mouse_exp)))
+h <- hclust(d,method="ward.D2")
+cluster_ids <- cutree(h, k = 2)
+clust_colors <- c("dodgerblue","orangered")[cluster_ids]
+
+heatmap(
+    as.matrix(mouse_exp),
+    hclustfun = myhclust,
+    ColSideColors = clust_colors
+)
+```
+
+### Bonus Exercise
+
+For your exercise, try the following:
+
+* Load the MASS package using: `library(MASS)`
+* Import `crabs` dataset using: `data(crabs)`
+* Learn about this dataset using: `?crabs`
+* Extract the numeric columns describing the crab measurements (“FL”, “RW”, “CL”, “CW”, “BD”)
+* Cluster the numeric columns using your method of choice
+* Plot and color your data by clusters, by species (`sp`), and `sex`
+* Do your clusters seem to separate these groups in the same way?
+
+### Bonus Exercise Results
+
+Load packages and data, subset needed columns:
+```{r, message=FALSE}
+library(MASS)
+data(crabs)
+```
+
+Learn more about the data:
+```{r, message=FALSE}
+?crabs
+head(crabs)
+```
+
+Subset needed columns:
+```{r, message=FALSE}
+crabs_meas <-  crabs[,c("FL","RW","CL","CW","BD")]
+```
+
+Perform hierarchical clustering:
+```{r, message=FALSE}
+c_dist <- dist(crabs_meas)
+c_hclust <- hclust(c_dist)
+plot(c_hclust)
+```
+
+Colour-code samples based on cluster assignment. Assume there are two clusters.
+```{r, message=FALSE}
+c_clusters = cutree(c_hclust,k = 2)
+```
+
+Now create a pairs plot, but colour-code by:
+
+1. by gene-expression based clusters
+2. by species
+3. by sex
+
+```{r, message=FALSE}
+pairs(
+    crabs_meas, 
+    col = c("orchid","forestgreen")[c_clusters]
+)
+
+pairs(
+    crabs_meas, 
+    col = c("orchid","forestgreen")[factor(crabs$sp)]
+)
+
+pairs(
+    crabs_meas, 
+    col = c("orchid","forestgreen")[factor(crabs$sex)]
+)
+```
+
+Hierarchical clustering:
+```{r, message=FALSE}
+h <- hclust(dist(crabs_meas),method="ward.D2")
+c2 <- cutree(h,k=2)
+
+hclust_fun <- function(x){
+    f <- hclust(x, method = "ward.D2");
+    return(f)
+}
+
+library(RColorBrewer)
+heatmap(
+    as.matrix(crabs_meas),
+    hclustfun = hclust_fun,
+    col = brewer.pal("Blues",n=8),
+    RowSideColors = c("pink","brown")[c2], 
+    ColSideColors = rep("green",5)
+)
+```
+
+Plot by sex:
+```{r, message=FALSE}
+heatmap(
+    as.matrix(crabs_meas),
+    hclustfun = hclust_fun,
+    col = brewer.pal("Blues",n=8),
+    RowSideColors = c("pink","brown")[factor(crabs$sex)], 
+    ColSideColors = rep("green",5)
+)
+```

@@ -1,0 +1,18 @@
+<!--
+IF YOUR WORKSHOP DOES NOT INCLUDE COMPUTE:
+- REMOVE "AND COMPUTE SETUP" FROM THE TOP-LEVEL HEADER
+- DELETE THE LAST SECTION (COMPUTE SETUP)
+
+IF YOUR WORKSHOP INCLUDES COMPUTE:
+- AFTER THE WORKSHOP, ADD DATA DOWNLOAD LINKS, AWS MACHINE IMAGE INSTRUCTIONS, ETC.
+- IF IT IS MORE APPROPRIATE, YOU CAN INCLUDE THE DATA DOWNLOAD LINKS IN EACH OF THE MODULES.
+-->
+
+# Data
+
+#### Course Data Downloads
+[mouse_pheno.txt](datasets/mouse_pheno.txt)<br>
+[titanic.csv](datasets/titanic.csv)<br>
+[tomerge1.csv](datasets/tomerge1.csv)<br>
+[tomerge2.txt](datasets/tomerge2.txt)
+

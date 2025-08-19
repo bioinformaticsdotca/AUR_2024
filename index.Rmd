@@ -1,0 +1,44 @@
+--- 
+title: "Analysis Using R 2024"
+author: "Faculty: Shraddha Pai, Chaitra Sarathy, Ian Cheong, Zoe Klein, Amin Nooranikhojasteh, Nia Hughes"
+date: "June 13, 2024 - June 14, 2024"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+url: https://bioinformaticsdotca.github.io/AUR_2024/ # CHANGE THIS LINK TO YOUR LANDING PAGE LINK
+cover-image: img/bioinformatics_logo.png
+description: |
+  Workshop website for the 2024 Analysis Using R Canadian Bioinformatics Workshop
+link-citations: yes
+github-repo: bioinformaticsdotca/AUR_2024 # CHANGE THIS TO YOUR OWN REPO
+favicon: img/favicon.icon
+---
+
+# (PART) Introduction {-}
+
+# Workshop Info
+
+Welcome to the 2024 Analysis Using R Canadian Bioinformatics Workshop webpage!  
+
+<iframe src="https://drive.google.com/file/d/1oIvBIFItGVubJPlBiuyDh6qXG-U1m3Ad/preview" width="640" height="480" allow="autoplay"></iframe>
+
+## Schedule
+
+| Time (EDT) | June 13                                                                             | Time (EDT) | June 14                                                           |
+|------------|-------------------------------------------------------------------------------------|------------|-------------------------------------------------------------------|
+| 8:30       | Arrivals & Check-in                                                                 | 8:30       | Arrivals                                                          |
+| 9:00       | Welcome (Nia Hughes)                                                                | 9:00       | Day 1 review Linear mixed models and evaluation (Shraddha Pai)    |
+| 9:30       | Exploratory data analysis and introducing clustering (Shraddha Pai)                 | 10:00      | Break (30 mins)                                                    |
+| 10:30      | Break (30 mins)                                                                      | 10:30      | Short linear model exercise (Shraddha Pai, Ian Cheong)            |
+| 11:00      | Exploratory data analysis and clustering project (Shraddha Pai, Ian Cheong)         | 12:30      | Class photo + Lunch (1 hr)                                          |
+| 13:00      | Lunch (1 hr)                                                                          | 13:30      | Bioconductor for differential expression (Shraddha Pai)           |
+| 14:00      | Dimensionality reduction (Chaitra Sarathy)                                          | 14:30      | Break (30 mins)                                                    |
+| 15:00      | Break (30 mins)                                                                      | 15:00      | Short differential expression exercise (Shraddha Pai, Ian Cheong) |
+| 15:30      | Short dimensionality reduction and clustering project (Chaitra Sarathy, Ian Cheong) | 17:00      | Survey & Closing Remarks                                          |
+| 17:30      | Finished                                                                            | 17:30      | Finished                                                          |
+
+## Pre-work
+
+[You can find your pre-work here.](https://docs.google.com/forms/d/e/1FAIpQLSejq4D7rOuJGTgqQLQJheCk9hirJGQsoJabKJN8SHfJX7GSRw/viewform)
+
+
