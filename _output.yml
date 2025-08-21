@@ -1,5 +1,11 @@
 bookdown::gitbook:
   css: style.css # This is how bookdown knows to look at style.css for formatting
+  pandoc_args:
+    - "--lua-filter=callouts.lua"
+  includes:                             # <<< ADDED/ENSURED THIS SECTION
+    in_header:                           # <<<
+      - fa-header.html                   # <<<
+      - _bioschemas.html
   config:
     toc: # Table of Contents
       collapse: subsection

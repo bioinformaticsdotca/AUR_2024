@@ -476,8 +476,8 @@ So you can see number of passengers by “Pclass” split by survival.</p>
 <p>First let’s make a scatterplot. Could there be a relationship?</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="module-3-generalized-linear-models.html#cb140-1" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(<span class="at">x =</span> glucose, <span class="at">y =</span> <span class="fu">factor</span>(diabetes)))</span>
 <span id="cb140-2"><a href="module-3-generalized-linear-models.html#cb140-2" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<pre><code>## Warning: Removed 5 rows containing missing values or values outside the
-## scale range (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
 <p><img src="_main_files/figure-html/plot-diabetes-vs-glucose-1.png" width="672" /></p>
 <p>Could this be fit with a linear model?</p>
 <p>Is there a continuous line that could reasonably fit the data?</p>
@@ -485,8 +485,8 @@ So you can see number of passengers by “Pclass” split by survival.</p>
 <span id="cb142-2"><a href="module-3-generalized-linear-models.html#cb142-2" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 5 rows containing non-finite outside the scale range
 ## (`stat_smooth()`).</code></pre>
-<pre><code>## Warning: Removed 5 rows containing missing values or values outside the
-## scale range (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 <p>This is a situation where a logistic regression model would be an appropriate choice because of the binary outcome.</p>
 <p>We’re going to use <code>glm()</code> to fit a model to these data:</p>
